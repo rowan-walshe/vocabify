@@ -213,6 +213,11 @@ const APIKeyInput = () => {
             type={inputType}
             defaultValue={apiKey}
             onChange={e => setNewApiKey(e.target.value)}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                saveApiKey();
+              }
+            }}
             placeholder="Enter your WaniKani API key here"
             className="w-full rounded border border-gray-300 p-2"
           />
