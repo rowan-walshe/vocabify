@@ -119,9 +119,11 @@ function fastReplaceTextNode(node: Text) {
   const currentTranslation = node.textContent;
   const lookupEntry = toReplace.lookup[currentTitle];
 
+  const oldSubjectType = node.parentElement.getAttribute('data-vocabify-subject-type');
+
   if (lookupEntry) {
     // If we have a translation in toReplace.lookup
-    if (currentTranslation !== lookupEntry.characters) {
+    if (currentTranslation !== lookupEntry.characters || oldSubjectType !== lookupEntry.subjectType) {
       // If the current translation doesn't match what's in toReplace.lookup, update it
       node.textContent = lookupEntry.characters;
 
@@ -131,7 +133,6 @@ function fastReplaceTextNode(node: Text) {
       const newNoStyleClass = newSubjectClass + '-no-style';
 
       // Remove all existing subject-related classes
-      const oldSubjectType = node.parentElement.getAttribute('data-vocabify-subject-type');
       if (oldSubjectType) {
         const oldSubjectClass = 'vocabify-' + oldSubjectType;
         const oldNoStyleClass = oldSubjectClass + '-no-style';
