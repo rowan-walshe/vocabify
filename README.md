@@ -3,9 +3,21 @@
 [![Unit Tests](https://github.com/rowan-walshe/vocabify-private/actions/workflows/vitest.yml/badge.svg)](https://github.com/rowan-walshe/vocabify-private/actions/workflows/vitest.yml)
 [![Lint Check](https://github.com/rowan-walshe/vocabify-private/actions/workflows/lint.yml/badge.svg)](https://github.com/rowan-walshe/vocabify-private/actions/workflows/lint.yml)
 
-## Description
+![Example Usage](docs/Example.gif)
 
-TODO add description and images
+## Description
+This is a simple Chrome extension for practicing vocabulary for a language that you're learning. It was inspired by WaniKanify / WaniKanify 2.0. While I plan to add support for custom vocab lists, the current version is only designed to work with the [WaniKani API](https://docs.api.wanikani.com/).
+
+It supports most major browsers.
+
+## Future Plans
+- [ ] Add more/better tests for existing features
+- [ ] Improve the consistency of the popup styling between different browsers
+- [ ] Add UI elements to make the update progress more obvious after setting the api key
+- [ ] Add a force refresh button to the popup (note: this can currently be done by updating the api key and reloading the page)
+- [ ] Add more details to the on-hover tooltips
+- [ ] Add an option for disabling on-hover tooltips
+- [ ] Add an option for disabling the extension for a specified duration
 
 ## Developer Info
 
