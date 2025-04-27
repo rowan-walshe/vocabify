@@ -23,8 +23,8 @@ const manifest = {
   name: '__MSG_extensionName__',
   browser_specific_settings: {
     gecko: {
-      id: 'example@example.com',
-      strict_min_version: '109.0',
+      id: 'vocabify@walshe.com',
+      strict_min_version: '112.0',
     },
   },
   version: packageJson.version,
