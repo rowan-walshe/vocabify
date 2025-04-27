@@ -1,0 +1,35 @@
+{
+  "name": "@extension/data-sources",
+  "version": "0.0.1",
+  "description": "chrome extension - code for various data sources",
+  "type": "module",
+  "private": true,
+  "sideEffects": false,
+  "files": [
+    "dist/**"
+  ],
+  "types": "index.mts",
+  "main": "dist/index.mjs",
+  "scripts": {
+    "clean:bundle": "rimraf dist",
+    "clean:node_modules": "pnpx rimraf node_modules",
+    "clean:turbo": "rimraf .turbo",
+    "clean": "pnpm clean:bundle && pnpm clean:node_modules && pnpm clean:turbo",
+    "ready": "tsc -b",
+    "lint": "eslint .",
+    "lint:fix": "pnpm lint --fix",
+    "prettier": "prettier . --write --ignore-path ../../.prettierignore",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@extension/storage": "workspace:*"
+  },
+  "devDependencies": {
+    "@extension/shared": "workspace:*",
+    "@extension/storage": "workspace:*",
+    "@extension/tsconfig": "workspace:*",
+    "@vitest/coverage-v8": "^3.1.1",
+    "@vitest/ui": "^3.1.1",
+    "vitest": "^3.1.1"
+  }
+}

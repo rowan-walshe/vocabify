@@ -1,0 +1,101 @@
+.vocabify {
+  all: unset !important;
+  color: inherit;
+  background-color: transparent;
+  position: relative;
+  direction: inherit;
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-kerning: inherit;
+  font-language-override: inherit;
+  font-optical-sizing: inherit;
+  font-palette: inherit;
+  font-size: inherit;
+  font-size-adjust: inherit;
+  font-stretch: inherit;
+  font-style: inherit;
+  font-synthesis: inherit;
+  font-synthesis-position: inherit;
+  font-synthesis-small-caps: inherit;
+  font-synthesis-style: inherit;
+  font-synthesis-weight: inherit;
+  font-variant: inherit;
+  font-variant-alternates: inherit;
+  font-variant-caps: inherit;
+  font-variant-east-asian: inherit;
+  font-variant-emoji: inherit;
+  font-variant-ligatures: inherit;
+  font-variant-numeric: inherit;
+  font-variant-position: inherit;
+  font-variation-settings: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-break: inherit;
+  line-clamp: inherit;
+  line-gap-override: inherit;
+  line-height: inherit;
+  line-height-step: inherit;
+  text-align: inherit;
+  text-align-last: inherit;
+  text-anchor: inherit;
+  text-combine-upright: inherit;
+  text-decoration: inherit;
+  text-decoration-color: inherit;
+  text-decoration-line: inherit;
+  text-decoration-skip: inherit;
+  text-decoration-skip-ink: inherit;
+  text-decoration-style: inherit;
+  text-decoration-thickness: inherit;
+  text-emphasis: inherit;
+  text-emphasis-color: inherit;
+  text-emphasis-position: inherit;
+  text-emphasis-style: inherit;
+  text-indent: inherit;
+  text-justify: inherit;
+  text-orientation: inherit;
+  text-overflow: inherit;
+  text-rendering: inherit;
+  text-shadow: inherit;
+  text-size-adjust: inherit;
+  text-spacing-trim: inherit;
+  text-transform: inherit;
+  text-underline-offset: inherit;
+  text-underline-position: inherit;
+  text-wrap: inherit;
+  text-wrap-mode: inherit;
+  text-wrap-style: inherit;
+  unicode-bidi: inherit;
+  white-space: inherit;
+  word-break: inherit;
+  word-spacing: inherit;
+  word-wrap: inherit;
+}
+
+.vocabify-radical {
+  background-color: rgb(0, 170, 255) !important;
+  border-radius: 0.5em !important;
+  padding: 0.1em 0.25em !important;
+  color: white !important;
+}
+.vocabify-kanji {
+  background-color: rgb(255, 0, 170) !important;
+  border-radius: 0.5em !important;
+  padding: 0.1em 0.25em !important;
+  color: white !important;
+}
+.vocabify-vocabulary {
+  background-color: rgb(170, 0, 255) !important;
+  border-radius: 0.5em !important;
+  padding: 0.1em 0.25em !important;
+  color: white !important;
+}
+.vocabify-kana_vocabulary {
+  background-color: rgb(170, 0, 255) !important;
+  border-radius: 0.5em !important;
+  padding: 0.1em 0.25em !important;
+  color: white !important;
+}
+
+.vocabify-hidden {
+  display: none;
+}
