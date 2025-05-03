@@ -2,6 +2,9 @@ import { wanikaniApiKeyStorage, useStorage } from '@extension/storage';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
+
+import PopupTooltip from './PopupTooltip';
 
 const APIKeyInput = () => {
   const [apiVisible, setApiVisible] = useState(false);
@@ -29,7 +32,26 @@ const APIKeyInput = () => {
 
   return (
     <div>
-      <h2 className="ml-2 font-bold">WaniKani API Key</h2>
+      <h2 className="ml-2 font-bold flex items-center">
+        WaniKani API Key
+        <PopupTooltip
+          element={<FontAwesomeIcon icon={faCircleQuestion} className="ml-1 text-gray-500 text-xs mt-3px" />}>
+          <div className="w-48 text-xs">
+            You can create an API from your{' '}
+            <a
+              href="https://www.wanikani.com/settings/personal_access_tokens"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline">
+              WaniKani settings
+            </a>{' '}
+            page.
+            <br />
+            You do you not need to give the API key any additional permissions. You can leave all of the boxes unchecked
+            when creating the key.
+          </div>
+        </PopupTooltip>
+      </h2>
       <div className="flex p-2">
         <div className="flex w-full justify-end">
           <input
