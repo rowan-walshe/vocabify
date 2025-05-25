@@ -1,6 +1,6 @@
 {
   "name": "@extension/data-sources",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "chrome extension - code for various data sources",
   "type": "module",
   "private": true,
