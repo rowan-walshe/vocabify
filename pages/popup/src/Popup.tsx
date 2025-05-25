@@ -1,55 +1,64 @@
 import { withErrorBoundary, withSuspense } from '@extension/shared';
-import { excludedDomainStorage, useStorage } from '@extension/storage';
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLanguage } from '@fortawesome/free-solid-svg-icons';
 
-import APIKeyInput from './ApiKeyInput';
-import SrsLevelSlider from './SrsLevelSlider';
-import SubjectTypeSelector from './SubjectTypeSelector';
-import OtherSettings from './OtherSettings';
+import { Tabs } from 'antd';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faGear, faArrowTrendUp } from '@fortawesome/free-solid-svg-icons';
+import { welcomeCompletedStorage, useStorage } from '@extension/storage';
+import Main from './pages/Main';
+import Settings from './pages/Settings';
+import Stats from './pages/Stats';
+import Welcome from './pages/Welcome';
 
 const Popup = () => {
-  return (
-    <div className="">
-      <div className="flex justify-center">
-        <ToggleIcon />
+  const welcomeCompleted = useStorage(welcomeCompletedStorage);
+
+  // Show welcome page if user hasn't completed setup yet
+  if (!welcomeCompleted) {
+    return (
+      <div className="app-root">
+        <Welcome />
       </div>
-      <APIKeyInput />
-      <SrsLevelSlider />
-      <SubjectTypeSelector />
-      <OtherSettings />
+    );
+  }
+
+  const tabs = [
+    {
+      label: (
+        <div className="flex flex-col">
+          <FontAwesomeIcon icon={faHouse} />
+          Home
+        </div>
+      ),
+      key: '1',
+      children: <Main />,
+    },
+    {
+      label: (
+        <div className="flex flex-col">
+          <FontAwesomeIcon icon={faArrowTrendUp} />
+          Stats
+        </div>
+      ),
+      key: '2',
+      children: <Stats />,
+    },
+    {
+      label: (
+        <div className="flex flex-col">
+          <FontAwesomeIcon icon={faGear} />
+          Settings
+        </div>
+      ),
+      key: '3',
+      children: <Settings />,
+    },
+  ];
+
+  return (
+    <div className="app-root">
+      <Tabs tabPosition="bottom" centered items={tabs} />
     </div>
   );
 };
 
-const ToggleIcon = () => {
-  const [currentDomain, setCurrentDomain] = useState('');
-  const excludedDomains = useStorage(excludedDomainStorage);
-
-  useEffect(() => {
-    async function getCurrentDomain() {
-      const [tab] = await chrome.tabs.query({ currentWindow: true, active: true });
-      if (!tab.url) return;
-      const url = new URL(tab.url);
-      const domain = url.hostname;
-      setCurrentDomain(domain);
-    }
-    getCurrentDomain();
-  }, []);
-
-  const styleClass =
-    currentDomain !== '' && excludedDomains.includes(currentDomain)
-      ? 'select-none text-red-600'
-      : 'select-none text-green-600';
-
-  const toggleDomain = async () => {
-    if (currentDomain) {
-      await excludedDomainStorage.toggleDomain(currentDomain);
-    }
-  };
-
-  return <FontAwesomeIcon icon={faLanguage} className={styleClass} onClick={toggleDomain} size="10x" />;
-};
-
-export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);
+export default withErrorBoundary(withSuspense(Popup, <div></div>), <div> Error Occur </div>);

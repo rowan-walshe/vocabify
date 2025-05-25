@@ -128,42 +128,150 @@ export const wanikaniAssignmentUpdateIntervalStorage = createStorage<number>(
   },
 );
 
-type DomainStorage = BaseStorage<string[]> & {
-  addDomain: (domain: string) => Promise<void>;
-  removeDomain: (domain: string) => Promise<void>;
-  toggleDomain: (domain: string) => Promise<void>;
+export type DomainSettings = {
+  alwaysTranslateDomain: string[];
+  neverTranslateDomain: string[];
 };
 
-const baseExcludedDomainStorage = createStorage<string[]>('excluded-domain-storage', [], {
-  storageEnum: StorageEnum.Sync,
-  liveUpdate: true,
-});
+type DomainSettingsStorage = BaseStorage<DomainSettings> & {
+  toggleAlwaysTranslateDomain: (domain: string) => Promise<void>;
+  toggleNeverTranslateDomain: (domain: string) => Promise<void>;
+  alwaysTranslateDomain: (domain: string) => Promise<void>;
+  neverTranslateDomain: (domain: string) => Promise<void>;
+  removeDomain: (domain: string) => Promise<void>;
+  getAlwaysTranslateDomain: (domain: string) => Promise<boolean>;
+  getNeverTranslateDomain: (domain: string) => Promise<boolean>;
+};
 
-// You can extend it with your own methods
-export const excludedDomainStorage: DomainStorage = {
-  ...baseExcludedDomainStorage,
-  addDomain: async (domain: string) => {
-    baseExcludedDomainStorage.set(currentData => {
-      if (!currentData.includes(domain)) {
-        currentData.push(domain);
+const baseDomainSettingsStorage = createStorage<DomainSettings>(
+  'domain-settings-storage',
+  {
+    alwaysTranslateDomain: [],
+    neverTranslateDomain: [],
+  },
+  {
+    storageEnum: StorageEnum.Sync,
+    liveUpdate: true,
+  },
+);
+
+export const domainSettingsStorage: DomainSettingsStorage = {
+  ...baseDomainSettingsStorage,
+  toggleAlwaysTranslateDomain: async (domain: string) => {
+    baseDomainSettingsStorage.set(currentData => {
+      if (currentData.alwaysTranslateDomain.includes(domain)) {
+        currentData.alwaysTranslateDomain.splice(currentData.alwaysTranslateDomain.indexOf(domain), 1);
+      } else {
+        currentData.alwaysTranslateDomain.push(domain);
+        if (currentData.neverTranslateDomain.includes(domain)) {
+          currentData.neverTranslateDomain.splice(currentData.neverTranslateDomain.indexOf(domain), 1);
+        }
+      }
+      return currentData;
+    });
+  },
+  toggleNeverTranslateDomain: async (domain: string) => {
+    baseDomainSettingsStorage.set(currentData => {
+      if (currentData.neverTranslateDomain.includes(domain)) {
+        currentData.neverTranslateDomain.splice(currentData.neverTranslateDomain.indexOf(domain), 1);
+      } else {
+        currentData.neverTranslateDomain.push(domain);
+        if (currentData.alwaysTranslateDomain.includes(domain)) {
+          currentData.alwaysTranslateDomain.splice(currentData.alwaysTranslateDomain.indexOf(domain), 1);
+        }
+      }
+      return currentData;
+    });
+  },
+  alwaysTranslateDomain: async (domain: string) => {
+    baseDomainSettingsStorage.set(currentData => {
+      if (!currentData.alwaysTranslateDomain.includes(domain)) {
+        currentData.alwaysTranslateDomain.push(domain);
+      }
+      if (currentData.neverTranslateDomain.includes(domain)) {
+        currentData.neverTranslateDomain.splice(currentData.neverTranslateDomain.indexOf(domain), 1);
+      }
+      return currentData;
+    });
+  },
+  neverTranslateDomain: async (domain: string) => {
+    baseDomainSettingsStorage.set(currentData => {
+      if (!currentData.neverTranslateDomain.includes(domain)) {
+        currentData.neverTranslateDomain.push(domain);
+      }
+      if (currentData.alwaysTranslateDomain.includes(domain)) {
+        currentData.alwaysTranslateDomain.splice(currentData.alwaysTranslateDomain.indexOf(domain), 1);
       }
       return currentData;
     });
   },
   removeDomain: async (domain: string) => {
-    baseExcludedDomainStorage.set(currentData => {
-      currentData.splice(currentData.indexOf(domain), 1);
-      return currentData;
-    });
-  },
-  toggleDomain: async (domain: string) => {
-    baseExcludedDomainStorage.set(currentData => {
-      if (currentData.includes(domain)) {
-        currentData.splice(currentData.indexOf(domain), 1);
-      } else {
-        currentData.push(domain);
+    baseDomainSettingsStorage.set(currentData => {
+      if (currentData.alwaysTranslateDomain.includes(domain)) {
+        currentData.alwaysTranslateDomain.splice(currentData.alwaysTranslateDomain.indexOf(domain), 1);
+      }
+      if (currentData.neverTranslateDomain.includes(domain)) {
+        currentData.neverTranslateDomain.splice(currentData.neverTranslateDomain.indexOf(domain), 1);
       }
       return currentData;
     });
   },
+  getAlwaysTranslateDomain: async (domain: string) => {
+    const data = await baseDomainSettingsStorage.get();
+    return data.alwaysTranslateDomain.includes(domain);
+  },
+  getNeverTranslateDomain: async (domain: string) => {
+    const data = await baseDomainSettingsStorage.get();
+    return data.neverTranslateDomain.includes(domain);
+  },
 };
+
+type TranslationSettings = {
+  translateByDefault: boolean;
+  invertUntil: number; // Actually a date, but stored as a number
+};
+
+export type TranslationSettingsStorage = BaseStorage<TranslationSettings> & {
+  toggleTranslateByDefault: () => Promise<void>;
+  setInvertUntil: (invertUntil: Date) => Promise<void>;
+  getTranslationActive: () => Promise<boolean>;
+};
+
+const baseTranslationSettingsStorage = createStorage<TranslationSettings>(
+  'translation-settings-storage',
+  {
+    translateByDefault: true,
+    invertUntil: 0,
+  },
+  {
+    storageEnum: StorageEnum.Local,
+    liveUpdate: true,
+  },
+);
+
+export const translationSettingsStorage: TranslationSettingsStorage = {
+  ...baseTranslationSettingsStorage,
+  toggleTranslateByDefault: async () => {
+    await baseTranslationSettingsStorage.set(currentData => {
+      currentData.translateByDefault = !currentData.translateByDefault;
+      currentData.invertUntil = 0; // Reset invertUntil when changing translateByDefault
+      return currentData;
+    });
+  },
+  setInvertUntil: async (invertUntil: Date) => {
+    await baseTranslationSettingsStorage.set(currentData => {
+      currentData.invertUntil = invertUntil.getTime();
+      return currentData;
+    });
+  },
+  getTranslationActive: async () => {
+    const data = await baseTranslationSettingsStorage.get();
+    const invertActive = data.invertUntil > 0 && Date.now() < data.invertUntil;
+    return data.translateByDefault !== invertActive;
+  },
+};
+
+export const welcomeCompletedStorage = createStorage<boolean>('welcome-completed-storage', false, {
+  storageEnum: StorageEnum.Local,
+  liveUpdate: true,
+});

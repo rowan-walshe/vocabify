@@ -10,8 +10,8 @@ export const RightTextSliderCheckbox = ({
   defaultChecked?: boolean;
 }) => {
   return (
-    <div>
-      <label className="relative flex items-center">
+    <div className="flex">
+      <label className="relative flex items-center p-2">
         <input
           type="checkbox"
           className="peer absolute left-0 h-6 w-10 appearance-none rounded-full"

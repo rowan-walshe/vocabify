@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  width: 370px;
+.app-root {
+  width: 320px;
+  height: 443px;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
     'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -13,12 +14,31 @@ body {
   position: relative;
 }
 
+.page-height {
+  height: 389px;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 .ant-slider-mark-text:not(.ant-slider-mark-text-active) > div {
   color: rgba(0, 0, 0, 0.45);
+}
+
+/* Custom styling for Ant Design Switch - checked state background color */
+.ant-switch-checked {
+  background-color: #4ade80 !important;
+}
+
+/* Preserve hover effects for checked state */
+.ant-switch-checked:hover:not(.ant-switch-disabled) {
+  background-color: #22c55e !important; /* Slightly darker green for hover */
+}
+
+.ant-tabs-nav {
+  height: 50px;
+  margin-top: 4px !important;
 }
 
 .mt-3px {

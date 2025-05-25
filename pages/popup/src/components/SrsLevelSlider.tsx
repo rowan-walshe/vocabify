@@ -38,10 +38,10 @@ const SrsLevelSlider = () => {
     9: <FontAwesomeIcon icon={faFire} />,
   };
   return (
-    <div>
-      <h2 className="ml-2 font-bold">SRS Level Range</h2>
+    <div className="m-2">
+      <h2 className="font-bold">SRS Level Range</h2>
       <Slider
-        className="mx-4"
+        className="mx-3"
         min={0}
         max={9}
         range={true}

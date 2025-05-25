@@ -1,6 +1,7 @@
 import { replaceTextNodes, reverseVocabify, style, unstyle, updateToReplace, vocabify } from './vocabify';
 import {
-  excludedDomainStorage,
+  domainSettingsStorage,
+  translationSettingsStorage,
   vocabToReplaceStorage,
   wanikaniSubjectStylePreferenceStorage,
 } from '@extension/storage';
@@ -12,11 +13,19 @@ const observerOptions = {
 
 const observer = new MutationObserver(vocabify);
 
-async function initialReplacement() {
+async function shouldTranslate(): Promise<boolean> {
   const currentDomain = window.location.hostname;
+  const domainSettings = await domainSettingsStorage.get();
+  const translationActive = await translationSettingsStorage.getTranslationActive();
+  return (
+    domainSettings.alwaysTranslateDomain.includes(currentDomain) ||
+    (translationActive && !domainSettings.neverTranslateDomain.includes(currentDomain))
+  );
+}
+
+async function initialReplacement() {
   await updateToReplace();
-  const excludedDomains = await excludedDomainStorage.get();
-  if (excludedDomains.includes(currentDomain)) {
+  if (!(await shouldTranslate())) {
     observer.disconnect();
     return;
   }
@@ -24,10 +33,8 @@ async function initialReplacement() {
   replaceTextNodes(document.body);
 }
 
-async function handleExcludedDomainsUpdate() {
-  const currentDomain = window.location.hostname;
-  const excludedDomains = await excludedDomainStorage.get();
-  if (excludedDomains.includes(currentDomain)) {
+async function handleSettingsUpdate() {
+  if (!(await shouldTranslate())) {
     observer.disconnect();
     reverseVocabify();
   } else {
@@ -38,9 +45,7 @@ async function handleExcludedDomainsUpdate() {
 
 async function handleVocabUpdate() {
   await updateToReplace();
-  const currentDomain = window.location.hostname;
-  const excludedDomains = await excludedDomainStorage.get();
-  if (excludedDomains.includes(currentDomain)) return;
+  if (!(await shouldTranslate())) return;
   replaceTextNodes(document.body);
 }
 
@@ -54,7 +59,8 @@ async function handleStylePreferenceUpdate() {
 }
 
 // TODO figure out if we need to unsubscribe from the observer
-excludedDomainStorage.subscribe(handleExcludedDomainsUpdate);
+domainSettingsStorage.subscribe(handleSettingsUpdate);
+translationSettingsStorage.subscribe(handleSettingsUpdate);
 vocabToReplaceStorage.subscribe(handleVocabUpdate);
 wanikaniSubjectStylePreferenceStorage.subscribe(handleStylePreferenceUpdate);
 initialReplacement();

@@ -3,8 +3,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
-
-import PopupTooltip from './PopupTooltip';
+import { Tooltip } from 'antd';
 
 const APIKeyInput = () => {
   const [apiVisible, setApiVisible] = useState(false);
@@ -31,30 +30,34 @@ const APIKeyInput = () => {
   const inputType = apiVisible ? 'text' : 'password';
 
   return (
-    <div>
-      <h2 className="ml-2 font-bold flex items-center">
+    <div className="m-2">
+      <h2 className="font-bold flex items-center text-xs">
         WaniKani API Key
-        <PopupTooltip
-          element={<FontAwesomeIcon icon={faCircleQuestion} className="ml-1 text-gray-500 text-xs mt-3px" />}>
-          <div className="w-48 text-xs">
-            You can create an API from your{' '}
-            <a
-              href="https://www.wanikani.com/settings/personal_access_tokens"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline">
-              WaniKani settings
-            </a>{' '}
-            page.
-            <br />
-            You do you not need to give the API key any additional permissions. You can leave all of the boxes unchecked
-            when creating the key.
-          </div>
-        </PopupTooltip>
+        <Tooltip
+          arrow
+          title={
+            <div className="w-48 text-xs">
+              You can create an API from your{' '}
+              <a
+                href="https://www.wanikani.com/settings/personal_access_tokens"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline">
+                WaniKani settings
+              </a>{' '}
+              page.
+              <br />
+              The API key doesn't need any additional permissions. When creating the key, you can leave all of the boxes
+              unchecked.
+            </div>
+          }>
+          <FontAwesomeIcon icon={faCircleQuestion} className="ml-1 text-gray-500 text-xs mt-3px" />
+        </Tooltip>
       </h2>
-      <div className="flex p-2">
-        <div className="flex w-full justify-end">
+      <div className="flex mt-1">
+        <div className="flex w-full justify-end relative">
           <input
+            className="w-full rounded border border-gray-300 p-2 pr-7 text-xs"
             type={inputType}
             defaultValue={apiKey}
             onChange={e => setNewApiKey(e.target.value)}
@@ -64,18 +67,19 @@ const APIKeyInput = () => {
               }
             }}
             placeholder="Enter your WaniKani API key here"
-            className="w-full rounded border border-gray-300 p-2"
           />
+          {/* Gradient overlay to fade text under the eye button */}
+          <div className="absolute right-7 top-0.5 bottom-0.5 w-10 pointer-events-none" />
           <FontAwesomeIcon
             icon={eyeIcon}
             onClick={togglePasswordVisibility}
-            className="absolute mr-2 w-4 select-none self-center text-gray-400"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 select-none cursor-pointer text-gray-400 z-10"
           />
         </div>
         <button
           onClick={saveApiKey}
           disabled={saving}
-          className="ml-2 w-20 rounded bg-blue-500 font-bold text-white shadow">
+          className="ml-2 w-20 rounded bg-blue-500 font-bold text-white text-xs shadow">
           {savingText}
         </button>
       </div>
