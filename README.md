@@ -12,12 +12,13 @@ It supports most major browsers.
 
 ## Future Plans
 - [ ] Add more/better tests for existing features
-- [ ] Improve the consistency of the popup styling between different browsers
 - [ ] Add UI elements to make the update progress more obvious after setting the api key
 - [ ] Add a force refresh button to the popup (note: this can currently be done by updating the api key and reloading the page)
 - [ ] Add more details to the on-hover tooltips
 - [ ] Add an option for disabling on-hover tooltips
-- [ ] Add an option for disabling the extension for a specified duration
+- [ ] Add options for configuring the update interval (currently subject and user data is updated every 24 hours, and assignment data is updated every hour [[1](https://github.com/rowan-walshe/vocabify/blob/main/packages/storage/lib/impl/userPreferencesStorage.ts#L104), [2](https://github.com/rowan-walshe/vocabify/blob/main/chrome-extension/src/background/index.ts#L21)])
+- [ ] Create a stats page
+- [ ] Add support for custom vocab lists
 
 ## Developer Info
 
